@@ -1,0 +1,12 @@
+name: OilDetectIA
+title: OilDetectIA
+username: marta-barea
+account: marta-barea
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14944617
+bundleId: 10466846
+url: https://marta-barea.shinyapps.io/OilDetectIA/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
