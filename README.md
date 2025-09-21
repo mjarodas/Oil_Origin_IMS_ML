@@ -1,7 +1,5 @@
 # Discrimination of olive oil samples accoding to their geographical origin: a machine learning approach using HS-GC-IMS data
 
----
-
 ## 📌 Overview
 This repository contains the code and workflows for the discrimination of olive oil samples according to their geographical origin, considering four origins (Spain, Morocco, Portugal and Italy). The analytical technique employed to obtain the data was headspace-gas chromatography-ion mobility spectrometry (HS-GC-IMS), whose conditions had previously been optimised and with the approximation of the use of IMSSS.
 
