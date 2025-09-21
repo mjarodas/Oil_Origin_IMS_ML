@@ -9,7 +9,7 @@ The objective of this research was to develop a machine learning-based algorithm
 
 The repository is structured as follows:
 
-´´´
+```
 
 ├── figures/                               # Generated figures from data analysis
 ├── scores/                                # Generated scores from data analysis
@@ -23,7 +23,7 @@ The repository is structured as follows:
 ├── README.md                              # Project documentation
 ├── LICENSE                                # License file
 
-´´´
+```
 
 # 🔄 Workflow
 The data analysis workflow follows these main steps:
