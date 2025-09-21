@@ -1,4 +1,4 @@
-# Librerías necesarias
+# Required libraries
 library(shiny)
 library(bslib)
 library(readxl)
@@ -14,13 +14,13 @@ library(prospectr)
 library(DT)
 library(shinycssloaders)
 
-# Cargar modelo RF entrenado
+# Load trained RF model
 modelo_rf <- readRDS("model_rf_savitzkyGolay_1st_derivative.rds")
 
-# Datos de ejemplo para descarga
+# Example data for download
 datos_ejemplo <- read_excel("test.xlsx")
 
-# Función de mapeo de clases
+# Class mapping function
 mapear_clase <- function(x) {
   recode(
     as.character(x),
@@ -28,11 +28,11 @@ mapear_clase <- function(x) {
     "2" = "IT",
     "3" = "MR",
     "4" = "PT",
-    .default = "Desconocido"
+    .default = "Unknown"
   )
 }
 
-# Definir UI
+# Define UI
 ui <- fluidPage(
   theme = bs_theme(
     version = 4,
@@ -48,7 +48,7 @@ ui <- fluidPage(
     tags$style(HTML(
       "
       body { background-color: #f7f9fa; }
-      /* Encabezado principal */
+      /* Main header */
       .header {
         background: linear-gradient(135deg, #004494 0%, #0056b3 100%);
         color: #ffffff;
@@ -61,7 +61,7 @@ ui <- fluidPage(
       .header h1 { margin: 0; font-size: 3.5em; font-weight: 700; letter-spacing: 1px; color: #ffffff; }
       .header p { margin: 10px 0 0; font-size: 1.25em; opacity: 0.8; color: #ffffff; }
 
-      /* Panel informativo */
+      /* Info panel */
       .info-panel {
         background: #ffffff;
         border-radius: 15px;
@@ -72,10 +72,10 @@ ui <- fluidPage(
       .info-panel h4 { font-weight: 600; color: #0056b3; }
       .info-panel p, .info-panel ul { font-size: 1em; color: #333333; line-height: 1.5; }
 
-      /* Layout info-section */
+      /* Info section layout */
       .info-section { width: 100%; padding: 0 20px; }
 
-      /* Botones y tablas */
+      /* Buttons and tables */
       .btn-primary { background-color: #0056b3; border-color: #004494; }
       .btn-primary:hover { background-color: #004494; }
       .shiny-input-container .btn { background-color: #198754; border-color: #157347; }
@@ -85,57 +85,57 @@ ui <- fluidPage(
       "
     ))
   ),
-  # Encabezado
+  # Header
   div(class = 'header',
-      h1("OliDetect IA"),
-      p("Análisis de muestras de aceite con IA en tiempo real")
+      h1("OliDetect AI"),
+      p("Real-time oil sample analysis with AI")
   ),
-  # Sección informativa completa ancho
+  # Full-width info section
   div(class = 'info-section',
-      # ¿Qué es?
+      # What is?
       div(class = 'info-panel',
-          h4(icon('info-circle'), "¿Qué es OliDetect IA?"),
-          p("Solución diseñada para identificar el origen de muestras de aceite en tiempo real en líneas de producción. Integra tecnologías HS-GC-IMS con un modelo Random Forest para ofrecer diagnósticos precisos y acelerar la toma de decisiones en control de calidad.")
+          h4(icon('info-circle'), "What is OliDetect AI?"),
+          p("A solution designed to identify the origin of oil samples in real time on production lines. It integrates HS-GC-IMS technologies with a Random Forest model to provide accurate diagnostics and speed up decision-making in quality control.")
       ),
-      # Cómo usar
+      # How to use
       div(class = 'info-panel',
-          h4(icon('question-circle'), "Cómo usar la aplicación"),
+          h4(icon('question-circle'), "How to use the application"),
           tags$ul(
-            tags$li(" Haz click en 'Seleccionar...' para cargar tu archivo .csv o .xlsx con datos espectrales."),
-            tags$li(" Ajusta las opciones de encabezado, separador y comillas si es necesario."),
-            tags$li(" Presiona 'Procesar' para generar la vista previa y las predicciones."),
-            tags$li(" En la pestaña 'Vista previa' revisa los primeros registros cargados."),
-            tags$li(" En la pestaña 'Predicciones' obtén el origen estimado de cada muestra de aceite."),
-            tags$li(" Usa 'Descargar ejemplo' para probar la app con datos de muestra.")
+            tags$li("Click 'Select...' to upload your .csv or .xlsx file with spectral data."),
+            tags$li("Adjust the header, separator, and quote options if needed."),
+            tags$li("Press 'Process' to generate the preview and predictions."),
+            tags$li("In the 'Preview' tab, check the first uploaded records."),
+            tags$li("In the 'Predictions' tab, get the estimated origin of each oil sample."),
+            tags$li("Use 'Download example' to test the app with sample data.")
           )
       )
   ),
-  # Layout principal
+  # Main layout
   fluidRow(
     column(width = 4,
            div(class = 'card-panel',
-               h4(icon('file-upload'), " Cargar espectro"),
-               fileInput("file1", NULL, buttonLabel = "Seleccionar...", placeholder = ".csv, .xlsx", accept = c('.csv','.xlsx')),
+               h4(icon('file-upload'), " Upload spectrum"),
+               fileInput("file1", NULL, buttonLabel = "Select...", placeholder = ".csv, .xlsx", accept = c('.csv','.xlsx')),
                fluidRow(
-                 column(6, checkboxInput("header", "Encabezado", TRUE)),
-                 column(6, selectInput("sep", "Separador", choices = c("," = ",", ";" = ";", "Tab" = "\t"), width = "100%"))
+                 column(6, checkboxInput("header", "Header", TRUE)),
+                 column(6, selectInput("sep", "Separator", choices = c("," = ",", ";" = ";", "Tab" = "\t"), width = "100%"))
                ),
                fluidRow(
-                 column(6, selectInput("quote", "Comillas", choices = c("Ninguna" = "", "Doble" = '"', "Simple" = "'"), width = "100%")),
-                 column(6, actionButton("submitbutton", "Procesar", class = 'btn btn-primary w-100'))
+                 column(6, selectInput("quote", "Quotes", choices = c("None" = "", "Double" = '"', "Single" = "'"), width = "100%")),
+                 column(6, actionButton("submitbutton", "Process", class = 'btn btn-primary w-100'))
                ),
                hr(),
-               h5("Datos de ejemplo"),
-               downloadButton("downloadData", "Descargar ejemplo", class = 'btn btn-primary w-100')
+               h5("Sample data"),
+               downloadButton("downloadData", "Download example", class = 'btn btn-primary w-100')
            )
     ),
     column(width = 8,
            tabsetPanel(
              type = "tabs",
-             tabPanel("Vista previa",
+             tabPanel("Preview",
                       div(class = 'card-panel', withSpinner(DTOutput("dataTable"), type = 6))
              ),
-             tabPanel("Predicciones",
+             tabPanel("Predictions",
                       div(class = 'card-panel', withSpinner(DTOutput("predicciones"), type = 6))
              )
            )
@@ -143,7 +143,7 @@ ui <- fluidPage(
   )
 )
 
-# Definir servidor
+# Define server
 server <- function(input, output, session) {
   datos_cargados <- reactiveVal(FALSE)
   observeEvent(input$submitbutton, { datos_cargados(TRUE) })
@@ -159,17 +159,17 @@ server <- function(input, output, session) {
     }
   })
   
-  # Vista previa
+  # Preview
   output$dataTable <- renderDT({
     req(datos_cargados())
     datatable(head(datos_subidos(), 6), options = list(dom = 't', ordering = FALSE), class = 'stripe hover')
   })
   
-  # Predicciones
+  # Predictions
   output$predicciones <- renderDT({
     req(datos_cargados())
     df <- datos_subidos()
-    ids <- if ('ID' %in% colnames(df)) as.character(df$ID) else paste0('Muestra_', seq_len(nrow(df)))
+    ids <- if ('ID' %in% colnames(df)) as.character(df$ID) else paste0('Sample_', seq_len(nrow(df)))
     espectro <- df %>% select(where(is.numeric)) %>% select(-any_of(c('GR','ID')))
     drv <- savitzkyGolay(as.matrix(espectro), m = 1, p = 2, w = 11)
     drv_df <- as.data.frame(drv)
@@ -179,19 +179,16 @@ server <- function(input, output, session) {
     drv_df <- drv_df[, vars, drop = FALSE]
     preds <- predict(modelo_rf, newdata = drv_df)
     clases <- mapear_clase(preds)
-    res <- data.frame(ID = ids, Grupo = preds, Tipo = clases, stringsAsFactors = FALSE)
+    res <- data.frame(ID = ids, Group = preds, Type = clases, stringsAsFactors = FALSE)
     datatable(res, options = list(pageLength = 10, autoWidth = TRUE), class = 'compact')
   })
   
-  # Descarga de ejemplo
+  # Download example
   output$downloadData <- downloadHandler(
-    filename = function() 'ejemplo.xlsx',
+    filename = function() 'example.xlsx',
     content = function(file) write_xlsx(datos_ejemplo, file)
   )
 }
 
-# Ejecutar la app
+# Run app
 shinyApp(ui = ui, server = server)
-
-
-

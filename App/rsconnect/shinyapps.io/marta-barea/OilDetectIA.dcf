@@ -5,7 +5,7 @@ account: marta-barea
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 14944617
-bundleId: 10466846
+bundleId: 10933871
 url: https://marta-barea.shinyapps.io/OilDetectIA/
 version: 1
 asMultiple: FALSE
