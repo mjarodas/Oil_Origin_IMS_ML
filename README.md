@@ -10,7 +10,6 @@ The objective of this research was to develop a machine learning-based algorithm
 The repository is structured as follows:
 
 ```
-
 ├── figures/                               # Generated figures from data analysis
 ├── scores/                                # Generated scores from data analysis
 ├── scripts/                               # Scripts for data analysis
